@@ -11,9 +11,12 @@
     ],
     "autoload": {
         "psr-4": {
-            "My\\App\\": "src/My/App"
+            "My\\": "src/My"
         }
     },
     "minimum-stability": "dev",
-    "require": {}
+    "require": {
+        "php": ">=5.4.0",
+        "ext-mysqli": "*"
+    }
 }
