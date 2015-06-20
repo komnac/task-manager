@@ -2,6 +2,11 @@
 
 require_once __DIR__ . '/vendor/autoload.php';
 
+use My\Database\Connection as DBConnection;
+use My\App\Registry as Registry;
+use My\App\Controller\User as UserController;
+
+
 define('APPDEBUG', '1');
 if (APPDEBUG) {
     ini_set('display_errors',1);
@@ -16,10 +21,18 @@ try {
         require_once $config;
     }
 
-    My\Database\Connection::setUpConfig($DBPARAMS);
-    $registry = My\App\Registry::getInstance();
+    DBConnection::setUpConfig($DBPARAMS);
 
-    $data = [];
+    $global = Registry::getInstance();
+    switch ($global->getVar('controller', '')) {
+        case 'user':
+            $action = new UserController();
+            break;
+        default:
+            die('');
+    }
+
+    $data = $action->exec($global->getVar('action', ''));
 } catch (Exception $e) {
     $data = [
         'success' => false,

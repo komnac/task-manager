@@ -75,9 +75,11 @@ abstract class Table
         
         $sql = array();
         $key = array();
-        foreach($rfields as $field) {
-            if ((!isset($fvalues[$field])) || ($fvalues[$field] == '')) {
-                $this->throwException(Exception::NOREQPROP, $fvalues);
+        foreach(array_keys($fvalues) as $field) {
+            if (in_array($field, $rfields)
+                && ((!isset($fvalues[$field])) || ($fvalues[$field] == ''))
+            ) {
+                    $this->throwException(Exception::NOREQPROP, $fvalues);
             }
             
             $sql[] = '`' . $field . '` = "' . $this->db->escape_string($fvalues[$field]) . '"';
@@ -87,6 +89,7 @@ abstract class Table
         
         $sql = 'INSERT INTO ' . $this->getTableName() . ' SET '.
                implode(',', $sql);
+        echo $sql;
         $this->db->query($sql);
 
         // Мы создали новую запись. Теперь пытаемся загрузить ее
