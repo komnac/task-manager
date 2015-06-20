@@ -1,0 +1,19 @@
+{
+    "name": "komnac/task-manager",
+    "description": "Simple task manager",
+    "type": "project",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "komnac",
+            "email": "kirillkomlev@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "My\\App\\": "src/My/App"
+        }
+    },
+    "minimum-stability": "dev",
+    "require": {}
+}
