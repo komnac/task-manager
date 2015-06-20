@@ -20,7 +20,8 @@ class Connection
      *
      * @throws Exception        When can not connect
      */
-    private static function createDbo() {
+    private static function createDbo()
+    {
         $db = new MysqliExtended(
             self::$conf['dbhost'],
             self::$conf['dbuser'],
