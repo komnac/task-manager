@@ -13,7 +13,7 @@ class User extends Controller {
                 'success' => true,
                 'login'   => $global->user->login,
                 'name'   => $global->user->name
-            );    
+            );
         } catch (\Exception $e) {
             return array(
                 'success' => false,
@@ -22,11 +22,11 @@ class User extends Controller {
                  );
         }
     }
-    
+
     public function login() {
         $this->logoff();
         $global = Registry::getInstance();
-        
+
         $user     = $global->getVar('login', '');
         $password = $global->getVar('password', '');
 
@@ -36,7 +36,7 @@ class User extends Controller {
                 throw new Exception(Exception::IVALID_LOGIN);
             }
             $global->user = $user;
-            
+
             $data = array(
                 'success' => true,
                 'login'   => $user->login,
@@ -48,14 +48,14 @@ class User extends Controller {
                 'login'   => ''
             );
         }
-        
+
         return $data;
     }
-    
+
     public function logoff() {
         $global = Registry::getInstance();
         unset($global->user);
-        
+
         return array(
             'success' => true
         );

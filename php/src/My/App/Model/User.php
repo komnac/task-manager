@@ -16,7 +16,7 @@ class User extends Table
     
     protected function getFieldsEditable()
     {
-        return array('name', 'email', 'password', 'is_admin');
+        return array('name', 'email', 'password');
     }
 
     protected function getFieldsRequired()
