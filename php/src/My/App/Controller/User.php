@@ -14,7 +14,7 @@ class User extends Controller {
                 'login'   => $global->user->login,
                 'name'   => $global->user->name
             );    
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return array(
                 'success' => false,
                 'login'   => '',
@@ -33,7 +33,7 @@ class User extends Controller {
         try {
             $user = new UserModel($user);
             if (!$user->auth($password)) {
-                throw new Exception('Not Auth');    
+                throw new Exception(Exception::IVALID_LOGIN);
             }
             $global->user = $user;
             
@@ -42,7 +42,7 @@ class User extends Controller {
                 'login'   => $user->login,
                 'name'    => $user->name
             );
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $data =  array(
                 'success' => false,
                 'login'   => ''
