@@ -11,7 +11,14 @@ Ext.onReady(function () {
             if (result.success) {
                 Ext.Msg.alert('Основное меню', 'Будем выводить здесь меню');
             } else {
-                Ext.Msg.alert('Аутентификация', 'Нужна аутентификация');
+                var frmLogin = new App.form.Login({
+                    url: 'php/index.php?controller=user&action=login',
+                    onSuccessAuth: function () {
+                        Ext.Msg.alert('Основное меню', 'Будем выводить здесь меню');
+                    },
+                    renderTo: Ext.getBody()
+                });
+                frmLogin.getEl().center();
             }
         }
     });
