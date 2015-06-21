@@ -2,7 +2,7 @@
 
 namespace My\ORM;
 
-class Exception
+class Exception extends \Exception
 {
     const BADARGUMENTS  = 'Некорректно заданны аргументы';
     const OBJNOTEXISTS  = 'Загружаемый объект не существует';
