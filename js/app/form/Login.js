@@ -49,4 +49,4 @@ App.form.Login = Ext.extend(Ext.FormPanel, {
         App.form.Login.superclass.initComponent.call(this);
     }
 });
-Ext.reg('appformlogin', App.form.Login);
+Ext.reg('app-form-login', App.form.Login);

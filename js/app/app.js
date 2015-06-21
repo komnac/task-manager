@@ -1,24 +1,33 @@
 Ext.namespace('App');
 
 Ext.onReady(function () {
+    Ext.QuickTips.init();
+
+    var mainAppliction = function() {
+        new Ext.Viewport({
+            layout: 'fit',
+            items: new App.panel.Main({
+                renderTo: Ext.getBody()
+            })
+        });
+    }
+
     Ext.Ajax.request({
         url: 'php/index.php?controller=user&action=isAuth',
         failure: function () {
             Ext.Msg.alert('Ошибка на сервере', 'Сервер ответил с ошибкой');
         },
         success: function (response) {
-            var result = Ext.util.JSON.decode(response.responseText);
-            if (result.success) {
-                Ext.Msg.alert('Основное меню', 'Будем выводить здесь меню');
-            } else {
+            var auth = Ext.util.JSON.decode(response.responseText);
+            if (!auth.success) {
                 var frmLogin = new App.form.Login({
-                    url: 'php/index.php?controller=user&action=login',
-                    onSuccessAuth: function () {
-                        Ext.Msg.alert('Основное меню', 'Будем выводить здесь меню');
-                    },
+                    url: 'php/?controller=user&action=login',
+                    onSuccessAuth: mainAppliction,
                     renderTo: Ext.getBody()
                 });
                 frmLogin.getEl().center();
+            } else {
+                mainAppliction();
             }
         }
     });
