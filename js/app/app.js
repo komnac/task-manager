@@ -22,7 +22,7 @@ Ext.onReady(function () {
             if (!auth.success) {
                 var frmLogin = new App.form.Login({
                     url: 'php/?controller=user&action=login',
-                    onSuccessAuth: mainAppliction,
+                    successAuthHandler: mainAppliction,
                     renderTo: Ext.getBody()
                 });
                 frmLogin.getEl().center();

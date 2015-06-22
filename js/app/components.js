@@ -42,7 +42,7 @@ App.form.Login = Ext.extend(Ext.FormPanel, {
                 inputType: 'password',
                 allowBlank: false
             }],
-            'onSuccessAuth': function() {
+            successAuthHandler: function() {
                 Ext.Msg.alert('Успех', 'Успешно авторизованы');
             },
             buttons: [{
@@ -52,7 +52,7 @@ App.form.Login = Ext.extend(Ext.FormPanel, {
                     frm.getForm().submit({
                         success: function () {
                             frm.hide();
-                            frm.onSuccessAuth();
+                            frm.successAuthHandler();
                             Ext.destroy(frm);
                         },
                         failure: function () {
@@ -74,7 +74,71 @@ App.form.Login = Ext.extend(Ext.FormPanel, {
 });
 Ext.reg('app-form-login', App.form.Login);
 
-Ext.ns('App.store');
+App.form.User = Ext.extend(Ext.FormPanel, {
+    initComponent: function() {
+        Ext.applyIf(this, {
+            title: 'Пользователь',
+            width: 260,
+            height: 200,
+            frame: true,
+            items: [{
+                xtype: 'textfield',
+                fieldLabel: 'Пользователь',
+                name: 'login',
+                anchor: '99%',
+                allowBlank: false
+            },{
+                xtype: 'textfield',
+                fieldLabel: 'ФИО',
+                name: 'name',
+                anchor: '99%'
+            }, {
+                xtype: 'textfield',
+                fieldLabel: 'Пароль',
+                name: 'password',
+                inputType: 'password',
+                anchor: '99%',
+                allowBlank: false
+            }, {
+                xtype: 'textfield',
+                fieldLabel: 'Еще раз пароль',
+                name: 'reply_password',
+                inputType: 'password',
+                anchor: '99%',
+                allowBland: false
+            }, {
+                xtype: 'textfield',
+                fieldLabel: 'Почта',
+                name: 'email',
+                vtype: 'email',
+                anchor: '99%'
+            }],
+            OkBtnPressHandler: function (form) {
+                 Ext.destroy(form)
+            },
+            buttons: [{
+                text: 'ОК',
+                handler: function (btn, event) {
+                    var frm = btn.ownerCt.ownerCt;
+                    if (!frm.getForm().isValid()) {
+                        Ext.Msg.alert('Ошибка заполнения', 'Форма заполнена не верно');
+                        return;
+                    }
+
+                    frm.OkBtnPressHandler(frm);
+                }
+            }, {
+                text: 'Отмена',
+                handler: function (btn, event) {
+                    var frm = btn.ownerCt.ownerCt;
+                    Ext.destroy(frm);
+                }
+            }]
+        });
+        App.form.User.superclass.initComponent.call(this);
+    }
+});
+Ext.reg('app-form-user', App.form.User);
 
 Ext.ns('App.grid');
 
@@ -96,8 +160,6 @@ App.grid.Users = Ext.extend(Ext.grid.GridPanel, {
             },
             remoteSort: true
         });
-
-        usersStore.load({params:{start:0, limit: 0}});
 
         Ext.applyIf(this, {
             store: usersStore,
@@ -122,18 +184,35 @@ App.grid.Users = Ext.extend(Ext.grid.GridPanel, {
                 singleSelect: true
             }),
 
-             bbar: new Ext.PagingToolbar({
+             tbar: new Ext.PagingToolbar({
                  pageSize: 20,
                  store: usersStore,
                  displayInfo: true,
                  displayMsg: 'Пользователи {0} - {1} из {2}',
                  loadMask: true,
                  frame: true,
-                 title: 'Список пользователей'
+                 title: 'Список пользователей',
+                 items: [
+                     '-',
+                     {
+                         text: 'Создать нового',
+                         iconCls: 'add-user',
+                         handler: function() {
+                             var createUserForm = new App.form.User({
+                                 title: 'Новый пользователь',
+                                 renderTo: Ext.getBody(),
+                                 url: 'php/index.php?controller=user&action=create',
+                                 OkBtnPressHandler: function (form) {
+                                     console.log('Hello Kirill');
+                                 }
+                             });
+                             createUserForm.getEl().center();
+                         }
+                     }
+                 ]
              })
         });
         App.grid.Users.superclass.initComponent.call(this);
     }
 });
 Ext.reg('app-grid-users', App.grid.Users);
-
