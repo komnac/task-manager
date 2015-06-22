@@ -19,7 +19,7 @@ class User extends Controller {
                 'success' => false,
                 'login'   => '',
                 'name'    => ''
-                 );
+            );
         }
     }
 

@@ -5,7 +5,7 @@ require_once __DIR__ . '/vendor/autoload.php';
 use My\Database\Connection as DBConnection;
 use My\App\Registry as Registry;
 use My\App\Controller\User as UserController;
-
+use My\App\Controller\Users as UsersController;
 
 define('APPDEBUG', '1');
 if (APPDEBUG) {
@@ -27,6 +27,9 @@ try {
     switch ($global->getVar('controller', '')) {
         case 'user':
             $action = new UserController();
+            break;
+        case 'users':
+            $action = new UsersController();
             break;
         default:
             die('');

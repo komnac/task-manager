@@ -1,4 +1,4 @@
-Ext.namespace('App');
+Ext.ns('App');
 
 Ext.onReady(function () {
     Ext.QuickTips.init();
@@ -27,7 +27,7 @@ Ext.onReady(function () {
                 });
                 frmLogin.getEl().center();
             } else {
-                mainAppliction();
+                mainAppliction()
             }
         }
     });
