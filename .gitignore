@@ -1,4 +1,6 @@
 .idea
-php/vendor
 .DS_Store
 */.DS_Store
+php/vendor
+js/node_modules
+js/build
