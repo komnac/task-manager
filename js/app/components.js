@@ -58,7 +58,7 @@ App.form.Login = Ext.extend(Ext.FormPanel, {
                         failure: function () {
                             Ext.Msg.show({
                                 title: 'Ошибка',
-                                msg: 'Не верно указаны имя пользователя или пароль!',
+                                msg: 'Не верно указаны логин или пароль!',
                                 icon: Ext.Msg.ERROR,
                                 buttons: Ext.Msg.OK
                             });
@@ -96,14 +96,17 @@ App.form.User = Ext.extend(Ext.FormPanel, {
                 xtype: 'textfield',
                 fieldLabel: 'Пароль',
                 name: 'password',
+                id: 'password',
                 inputType: 'password',
                 anchor: '99%',
                 allowBlank: false
             }, {
                 xtype: 'textfield',
                 fieldLabel: 'Еще раз пароль',
-                name: 'reply_password',
+                name: 'replyPassword',
+                vtype: 'password',
                 inputType: 'password',
+                initialPassField: 'password',
                 anchor: '99%',
                 allowBland: false
             }, {
@@ -203,6 +206,15 @@ App.grid.Users = Ext.extend(Ext.grid.GridPanel, {
                                  renderTo: Ext.getBody(),
                                  url: 'php/index.php?controller=user&action=create',
                                  OkBtnPressHandler: function (form) {
+                                     form.getForm().submit({
+                                         success: function() {
+                                             usersStore.reload();
+                                             Ext.destroy(form);
+                                         },
+                                         failure: function(frm, action) {
+                                             Ext.Msg.alert('Ошибка', action.result.error);
+                                         }
+                                     });
                                      console.log('Hello Kirill');
                                  }
                              });
