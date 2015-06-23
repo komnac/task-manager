@@ -1,11 +1,12 @@
 Ext.ns('App.panel');
 App.panel.Main = Ext.extend(Ext.TabPanel, {
     initComponent: function() {
-        var usersGrid = new App.grid.Users();
-
         Ext.applyIf(this, {
             activeTab: 0,
             border: false,
+            tbar: [{
+                xtype: 'app-main-menu-toolbar'
+            }],
             items: [
                 {
                     title: 'Пользователи',

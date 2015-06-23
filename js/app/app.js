@@ -6,9 +6,9 @@ Ext.onReady(function () {
     var mainAppliction = function() {
         new Ext.Viewport({
             layout: 'fit',
-            items: new App.panel.Main({
-                renderTo: Ext.getBody()
-            })
+            items: [{
+                xtype: 'app-panel-main'
+            }]
         });
     }
 

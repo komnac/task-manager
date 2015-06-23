@@ -11,4 +11,9 @@ abstract class Table extends OrmTable
     {
         return DBConnection::getInstance();
     }
+
+    public function __wakeup()
+    {
+        $this->db = $this->getDBO();
+    }
 }

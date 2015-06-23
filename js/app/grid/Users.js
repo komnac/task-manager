@@ -46,7 +46,6 @@ App.grid.Users = Ext.extend(Ext.grid.GridPanel, {
                 pageSize: 20,
                 store: usersStore,
                 displayInfo: true,
-                displayMsg: 'Пользователи {0} - {1} из {2}',
                 loadMask: true,
                 frame: true,
                 title: 'Список пользователей',
@@ -55,6 +54,7 @@ App.grid.Users = Ext.extend(Ext.grid.GridPanel, {
                     {
                         text: 'Создать нового',
                         iconCls: 'add-user',
+                        border: true,
                         handler: function() {
                             var createUserForm = new App.form.User({
                                 title: 'Новый пользователь',
@@ -67,7 +67,11 @@ App.grid.Users = Ext.extend(Ext.grid.GridPanel, {
                                             Ext.destroy(form);
                                         },
                                         failure: function(frm, action) {
-                                            Ext.Msg.alert('Ошибка', action.result.error);
+                                            if (action.result.error) {
+                                                Ext.Msg.alert('Ошибка', action.result.error);
+                                            } else {
+                                                Ext.Msg.alert('Ошибка', 'Неизвестная ошибка от сервера');
+                                            }
                                         }
                                     });
                                     console.log('Hello Kirill');

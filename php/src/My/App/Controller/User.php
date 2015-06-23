@@ -7,7 +7,8 @@ use My\App\Model\User as UserModel;
 use My\Database\Exception as DatabaseException;
 
 class User extends Controller {
-    public function isAuth() {
+    public function isAuth()
+    {
         $global = Registry::getInstance();
         try {
             return [
@@ -24,7 +25,8 @@ class User extends Controller {
         }
     }
 
-    public function login() {
+    public function login()
+    {
         $this->logoff();
         $global = Registry::getInstance();
 
@@ -53,7 +55,54 @@ class User extends Controller {
         return $data;
     }
 
-    public function logoff() {
+    public function update()
+    {
+        if (!$this->isAuth()) {
+            throw new Exception(Exception::AUTH_REQUIRED);
+        }
+
+        $global = Registry::getInstance();
+
+        if ($global->user->login !== $global->getVar('login', '')) {
+            throw new Exception('Нельзя обновлять чужой профиль');
+        }
+        $password = $global->getVar('password', '');
+        $replyPassword = $global->getVar('replyPassword', '');
+
+        if ($password) {
+            if ($password !== $replyPassword) {
+                throw new Exception(Exception::PW_MISMATCH);
+            }
+            $global->user->password = $password;
+        }
+        $global->user->name = $global->getVar('name', '');
+        $global->user->email = $global->getVar('email', '');
+
+        return [
+            'success' => true
+        ];
+    }
+
+
+    public function getInfo()
+    {
+        if (!$this->isAuth()) {
+            throw new Exception(Exception::AUTH_REQUIRED);
+        }
+
+        $user = Registry::getInstance()->user;
+        return [
+            'success' => true,
+            'data' => [
+                'name' => $user->name,
+                'login' => $user->login,
+                'email' => $user->email
+            ]
+        ];
+    }
+
+    public function logoff()
+    {
         $global = Registry::getInstance();
         unset($global->user);
 
@@ -62,7 +111,8 @@ class User extends Controller {
         ];
     }
 
-    public function create() {
+    public function create()
+    {
         if (!$this->isAuth()) {
             throw new Exception(Exception::AUTH_REQUIRED);
         }
@@ -75,11 +125,11 @@ class User extends Controller {
         $email = $global->getVar('email', '');
 
         if (empty($login) || empty($password)) {
-            throw new Exception("Не все обязательные поля заданы");
+            throw new Exception('Не все обязательные поля заданы');
         }
 
         if ($password !== $replyPassword) {
-            throw new Exception("Пароли не совпадают");
+            throw new Exception('Пароли не совпадают');
         }
 
         $user = new UserModel();
