@@ -71,7 +71,7 @@ class User extends Controller {
         $login = $global->getVar('login', '');
         $name = $global->getVar('name', '');
         $password = $global->getVar('password', '');
-        $replyPassword = $global->getVar('replayPassword', '');
+        $replyPassword = $global->getVar('replyPassword', '');
         $email = $global->getVar('email', '');
 
         if (empty($login) || empty($password)) {
