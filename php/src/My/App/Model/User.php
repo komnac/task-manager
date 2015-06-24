@@ -11,17 +11,22 @@ class User extends Table
     
     protected function getFieldsKey()
     {
-        return array('login');
+        return ['id'];
     }
     
     protected function getFieldsEditable()
     {
-        return array('name', 'email', 'password');
+        return [ 'name', 'email', 'password' ];
     }
 
     protected function getFieldsRequired()
     {
-        return $this->getFieldsKey();
+        return [ 'login' ];
+    }
+
+    protected function getFieldsLoad()
+    {
+        return [ 'login' ];
     }
 
     public function __set($param, $value)

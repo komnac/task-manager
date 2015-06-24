@@ -4,12 +4,13 @@ App.grid.Users = Ext.extend(Ext.grid.GridPanel, {
     initComponent: function() {
         var usersStore = new Ext.data.JsonStore({
             root: 'users',
-            idProperty: 'login',
+            idProperty: 'id',
             url: 'php/index.php?controller=users&action=getList',
             autoLoad: true,
             fields: [
+                {name: 'id',    type: 'int'},
                 {name: 'login', type: 'string'},
-                {name: 'name', type: 'string' },
+                {name: 'name',  type: 'string' },
                 {name: 'email', type: 'string' }
             ],
             softInfo: {
@@ -42,7 +43,7 @@ App.grid.Users = Ext.extend(Ext.grid.GridPanel, {
                 singleSelect: true
             }),
 
-            tbar: new Ext.PagingToolbar({
+            bbar: new Ext.PagingToolbar({
                 pageSize: 20,
                 store: usersStore,
                 displayInfo: true,
@@ -74,7 +75,6 @@ App.grid.Users = Ext.extend(Ext.grid.GridPanel, {
                                             }
                                         }
                                     });
-                                    console.log('Hello Kirill');
                                 }
                             });
                             createUserForm.getEl().center();

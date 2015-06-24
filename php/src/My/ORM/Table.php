@@ -23,7 +23,7 @@ abstract class Table
     
     /**
      * Must return an array of fields list which used as keys
-     *  {used for load() and delete()}
+     *  {used for delete()}
      *
      *  @return array
      */
@@ -42,6 +42,19 @@ abstract class Table
      * @return array
      */
     abstract protected function getFieldsRequired();
+
+    /**
+     * Must return an arrayn of fields list which used for search instance
+     * {used for load()}
+     *
+     * By default the same as getFieldsKey()
+     *
+     * @return array
+     */
+    protected function getFieldsLoad()
+    {
+        return $this->getFieldsKey();
+    }
     
     public function __construct($fvalues = null)
     {
@@ -123,7 +136,7 @@ abstract class Table
      */
     public function load($fvalues)
     {
-        $rfields = $this->getFieldsKey();
+        $rfields = $this->getFieldsLoad();
 
         if (!is_array($fvalues)) {
             if (count($rfields) == 1) {
