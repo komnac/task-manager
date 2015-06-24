@@ -17,20 +17,35 @@ App.form.Login = Ext.extend(Ext.FormPanel, {
                 fieldLabel: 'Пароль',
                 name: 'password',
                 inputType: 'password',
-                allowBlank: false
+                allowBlank: false,
+                enableKeyEvents: true,
+                listeners: {
+                    keypress : function(textfield, eo){
+                        if (eo.getCharCode() == Ext.EventObject.ENTER) {
+                            var okBtn = textfield.ownerCt.buttons[0];
+                            okBtn.handler(okBtn);
+                        }
+                    }
+                }
             }],
             successAuthHandler: function() {
                 Ext.Msg.alert('Успех', 'Успешно авторизованы');
             },
             buttons: [{
                 text: 'Войти',
-                handler: function (btn, event) {
-                    var frm = btn.ownerCt.ownerCt;
-                    frm.getForm().submit({
+                handler: function (btn) {
+                    var frmPnl = btn.ownerCt.ownerCt;
+                    var frm = frmPnl.getForm();
+                    if (!frm.isValid()) {
+                        return false;
+
+                    }
+
+                    frm.submit({
                         success: function () {
-                            frm.hide();
+                            frmPnl.hide();
                             frm.successAuthHandler();
-                            Ext.destroy(frm);
+                            Ext.destroy(frmPnl);
                         },
                         failure: function () {
                             Ext.Msg.show({
