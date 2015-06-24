@@ -11,7 +11,7 @@ module.exports = function(grunt) {
                     'app/init/*.js',
                     'app/form/*.js',
                     'app/panel/*.js',
-                    'app/toolbar/*.js',
+                    'app/button/*.js',
                     'app/grid/*.js',
                     'app/app.js'
                 ],

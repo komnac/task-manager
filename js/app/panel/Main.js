@@ -4,9 +4,16 @@ App.panel.Main = Ext.extend(Ext.TabPanel, {
         Ext.applyIf(this, {
             activeTab: 0,
             border: false,
-            tbar: [{
-                xtype: 'app-main-menu-toolbar'
-            }],
+            tbar: new Ext.Toolbar({
+                items: [
+                    '->', {
+                        xtype: 'app-button-change-profile'
+                    },
+                    '-', {
+                        xtype: 'app-button-logout'
+                    }
+                ]
+            }),
             items: [
                 {
                     title: 'Пользователи',
