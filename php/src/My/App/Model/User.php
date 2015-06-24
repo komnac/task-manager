@@ -24,11 +24,6 @@ class User extends Table
         return [ 'login' ];
     }
 
-    protected function getFieldsLoad()
-    {
-        return [ 'login' ];
-    }
-
     public function __set($param, $value)
     {
         if ($param == 'password') {

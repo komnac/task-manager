@@ -30,12 +30,12 @@ class User extends Controller {
         $this->logoff();
         $global = Registry::getInstance();
 
-        $user     = $global->getVar('login', '');
+        $login    = $global->getVar('login', '');
         $password = $global->getVar('password', '');
 
         try {
-            $user = new UserModel($user);
-            if (!$user->auth($password)) {
+            $user = new UserModel();
+            if (!$user->find(['login' => $login ]) || !$user->auth($password)) {
                 throw new Exception(Exception::IVALID_LOGIN);
             }
             $global->user = $user;

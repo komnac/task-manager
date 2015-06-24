@@ -43,19 +43,6 @@ abstract class Table
      */
     abstract protected function getFieldsRequired();
 
-    /**
-     * Must return an arrayn of fields list which used for search instance
-     * {used for load()}
-     *
-     * By default the same as getFieldsKey()
-     *
-     * @return array
-     */
-    protected function getFieldsLoad()
-    {
-        return $this->getFieldsKey();
-    }
-    
     public function __construct($fvalues = null)
     {
         $this->db = $this->getDBO();
@@ -126,17 +113,16 @@ abstract class Table
         return $this;
     }
     
-    
     /**
-     * Load a record to object
+     * Load a record to object by given fields
      *
-     * @param mixed Array Array (field => value ...) with keys fields
+     * @param mixed Array (field => value ...) with keys fields
      *
      * @return bool true if success
      */
     public function load($fvalues)
     {
-        $rfields = $this->getFieldsLoad();
+        $rfields = $this->getFieldsKey();
 
         if (!is_array($fvalues)) {
             if (count($rfields) == 1) {
@@ -156,22 +142,28 @@ abstract class Table
         }
         
         $sql = 'SELECT * FROM ' . $this->getTableName() . ' WHERE ' . implode(',', $sql);
-        $res = $this->db->query($sql);
-        
-        if ((!$res) || ($res->num_rows < 1)) {
-            return false;
-        }
-        
-        $row = $res->fetch_assoc();
-        foreach($row as $field => $value) {
+        $this->tryLoad($sql);
+    }
+
+    /**
+     * Try to find only 1 record for given fields
+     *
+     * @param mixed Array (field => value ...) with keys fields
+     *
+     * @return bool|object  FALSE if no a multiple record exists
+     */
+    public function find($fvalues)
+    {
+        $sql = array();
+        foreach ($fvalues as $field => $value) {
             if (!$this->isField($field)) {
                 $this->throwException(Exception::UNKNOWNPROP, $field);
             }
-            
-            $this->values[$field] = $value;
+            $sql[] = '`' . $field . '` = "' . $this->db->escape_string($value) . '"';
         }
-        
-        return $this;
+
+        $sql = 'SELECT * FROM ' . $this->getTableName() . ' WHERE ' . implode(',', $sql);
+        return $this->tryLoad($sql);
     }
     
     /**
@@ -270,5 +262,25 @@ abstract class Table
     protected function throwException($message, $params = '')
     {
         throw new Exception($message . ' [' . get_class($this) . '] => {' . $params . '}');
+    }
+
+    protected function tryLoad($sql)
+    {
+        $res = $this->db->query($sql);
+
+        if ((!$res) || ($res->num_rows !== 1)) {
+            return false;
+        }
+
+        $row = $res->fetch_assoc();
+        foreach($row as $field => $value) {
+            if (!$this->isField($field)) {
+                $this->throwException(Exception::UNKNOWNPROP, $field);
+            }
+
+            $this->values[$field] = $value;
+        }
+
+        return $this;
     }
 }
