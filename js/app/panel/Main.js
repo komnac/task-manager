@@ -2,7 +2,7 @@ Ext.ns('App.panel');
 App.panel.Main = Ext.extend(Ext.TabPanel, {
     initComponent: function() {
         Ext.applyIf(this, {
-            activeTab: 0,
+            activeTab: 1,
             border: false,
             tbar: new Ext.Toolbar({
                 items: [
@@ -20,7 +20,7 @@ App.panel.Main = Ext.extend(Ext.TabPanel, {
                     xtype: 'app-grid-users'
                 }, {
                     title: 'Задачи',
-                    html: '<h3>Здесь будем выводить задачи</h3>'
+                    xtype: 'app-grid-tasks'
                 }
             ]
 

@@ -24,12 +24,17 @@ abstract class Tables {
     protected $fields = array();
 
     /**
+     * @var array $filedsAlias List of alias fields (this params has effect only output string)
+     */
+    protected $fieldsAlias = array();
+
+    /**
      * @var array $tables Lists of tables in SQL
      */
     protected $tables = array();
 
     /**
-     * @var string $relat Relationship SQL string (in WHERE statment)
+     * @var string $relat Relationship SQL string (in WHERE statement)
      */
     protected $relat  = '';
 
@@ -84,7 +89,7 @@ abstract class Tables {
      */
     public function loadList($field = null)
     {
-        if ((!is_null($field)) && (!$this->_isField($field))) {
+        if ((!is_null($field)) && (!$this->getSqlField($field))) {
             return array();
         }
 
@@ -94,23 +99,24 @@ abstract class Tables {
 
         $res = $this->db->query($sql);
 
-        if ($res->num_rows) {
-            if (!is_null($field)) {
-                for ($arr = array(); $row = $res->fetch_array(MYSQLI_ASSOC);) {
-                    $arr[$row[$field]] = $row;
-                }
-                return $arr;
-            } elseif (method_exists('mysqli_result', 'fetch_all')) {
-                return $res->fetch_all(MYSQLI_ASSOC);
-            } else {
-                for ($arr = array(); $row = $res->fetch_array(MYSQLI_ASSOC);) {
-                    $arr[] = $row;
-                }
-                return $arr;
-            }
+        if (!$res->num_rows) {
+            return array();
         }
 
-        return array();
+        if (!is_null($field)) {
+            for ($arr = array(); $row = $res->fetch_array(MYSQLI_ASSOC);) {
+                $arr[$row[$field]] = $row;
+            }
+            return $arr;
+        } elseif (method_exists('mysqli_result', 'fetch_all')) {
+            return $res->fetch_all(MYSQLI_ASSOC);
+        } else {
+            for ($arr = array(); $row = $res->fetch_array(MYSQLI_ASSOC);) {
+                $arr[] = $row;
+            }
+            return $arr;
+        }
+
     }
 
     /**
@@ -148,13 +154,13 @@ abstract class Tables {
         $res = $this->db->query($sql);
 
         if ($res->num_rows) {
-            for ($arr = array(); $row = $res->fetch_row();) {
-                $arr[] = $row[0];
-            }
-            return $arr;
+            return array();
         }
 
-        return array();
+        for ($arr = array(); $row = $res->fetch_row();) {
+            $arr[] = $row[0];
+        }
+        return $arr;
     }
 
     /**
@@ -214,22 +220,22 @@ abstract class Tables {
      *
      * @param string $field a field to sort by
      *
-     * @return bool true if success
+     * @return null|self Return self or null if couldn't set
      */
     public function sortBy($field, $asc = 'asc')
     {
-       $asc = strtolower($asc);
-       if ($field = $this->_isField($field)) {
-           if ($asc != 'desc') {
-               $asc = 'asc';
-           }
+        $asc = strtolower($asc);
+        if ($field = $this->getSqlField($field)) {
+            return null;
+        }
 
-           $this->order = $field . ' ' . $asc;
+        if ($asc != 'desc') {
+            $asc = 'asc';
+        }
 
-           return true;
-       }
+        $this->order = $field . ' ' . $asc;
 
-       return false;
+        return $this;
    }
 
     /**
@@ -239,7 +245,7 @@ abstract class Tables {
      * @param mixed $values filter value (or array of values)
      * @param bool $invert invert filter (add NOT)
      *
-     * @return bool true if success
+     * @return self|null self if success, null otherwise
      */
     public function addFilter(/*$field, $value, $invert = false, $group = 'new'*/)
     {
@@ -249,19 +255,18 @@ abstract class Tables {
             throw new \BadMethodCallException(Exception::BADARGUMENTS);
         }
 
-        if ($filter = $this->_getSqlFilter($vars['field'],
-                                           $vars['value'],
-                                           $vars['invert'])) {
-            if ($vars['group']) {
-                $this->filter[$vars['group']][] = $filter;
-            } else {
-                $this->filter[][] = $filter;
-            }
-
-            return true;
+        $filter = $this->_getSqlFilter($vars['field'], $vars['value'], $vars['invert']);
+        if (!$filter) {
+            return null;
         }
 
-        return false;
+        if ($vars['group']) {
+            $this->filter[$vars['group']][] = $filter;
+        } else {
+            $this->filter[][] = $filter;
+        }
+
+        return $this;
     }
 
     protected function _getVarFilter($vars)
@@ -301,7 +306,7 @@ abstract class Tables {
     {
         $sql = '';
 
-        if (($field = $this->_isField($field))) {
+        if (($field = $this->getSqlField($field))) {
             $not = $invert ? ' NOT ' : ' ';
 
             if (is_array($value)) {
@@ -367,7 +372,7 @@ abstract class Tables {
                                     $vars['invert']
                 );
             } else {
-                $filter = $this->_isField($vars['field']);
+                $filter = $this->getSqlField($vars['field']);
             }
 
             if (!$filter) {
@@ -427,15 +432,15 @@ abstract class Tables {
         $this->limit  = 0;
     }
 
-    private function _isField($field)
+    private function getSqlField($field)
     {
-        if (array_key_exists($field, $this->fields)) {
+        if (array_key_exists($field, $this->fields) || in_array($field, $this->fieldsAlias)) {
             return '`' . str_replace('.', '`.`', $field) . '`';
-        } else {
-            foreach ($this->fields as $f => $t) {
-                if ($field == substr(strrchr($f, '.'), 1)) {
-                    return '`' . str_replace('.', '`.`', $f) . '`';
-                }
+        }
+
+        foreach ($this->fields as $f => $t) {
+            if ($field == substr(strrchr($f, '.'), 1)) {
+                return '`' . str_replace('.', '`.`', $f) . '`';
             }
         }
 
@@ -470,7 +475,9 @@ abstract class Tables {
         }
 
         foreach ($fields as &$field) {
-            if (!$field = $this->_isField($field)) {
+            $alias = (array_key_exists($field, $this->fieldsAlias)) ? ' as ' . $this->fieldsAlias[$field] : '';
+            $field = $this->getSqlField($field) . $alias;
+            if (empty($field)) {
                 return false;
             }
         }

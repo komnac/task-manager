@@ -6,6 +6,7 @@ use My\Database\Connection as DBConnection;
 use My\App\Registry as Registry;
 use My\App\Controller\User as UserController;
 use My\App\Controller\Users as UsersController;
+use My\App\Controller\Tasks as TasksController;
 
 define('APPDEBUG', '1');
 if (APPDEBUG) {
@@ -30,6 +31,9 @@ try {
             break;
         case 'users':
             $action = new UsersController();
+            break;
+        case 'tasks':
+            $action = new TasksController();
             break;
         default:
             die('');
