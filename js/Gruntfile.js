@@ -5,9 +5,6 @@ module.exports = function(grunt) {
         concat: {
             dist: {
                 src: [
-                    'extjs/adapter/ext/ext-base.js',
-                    'extjs/ext-all.js',
-                    'extjs/src/locale/ext-lang-ru.js',
                     'app/init/*.js',
                     'app/form/*.js',
                     'app/panel/*.js',
@@ -31,7 +28,7 @@ module.exports = function(grunt) {
             files: [
                 'app/**/*.js'
             ],
-            tasks: [ 'concat' ],
+            tasks: [ 'default' ],
             options: {
                 spawn: false
             }
