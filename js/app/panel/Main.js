@@ -7,6 +7,8 @@ App.panel.Main = Ext.extend(Ext.TabPanel, {
         Ext.applyIf(this, {
             activeTab: 1,
             border: false,
+            region: 'center',
+            margins:'0 5 5 0',
             tbar: new Ext.Toolbar({
                 items: [
                     '->', {
@@ -27,8 +29,38 @@ App.panel.Main = Ext.extend(Ext.TabPanel, {
                     store: storeUsers
                 }, {
                     title: 'Задачи',
-                    xtype: 'app-grid-tasks',
-                    store: storeTasks
+                    layout: 'border',
+                    items: [{
+                        region: 'center',
+                        xtype: 'app-grid-tasks',
+                        store: storeTasks,
+                        sm: new Ext.grid.RowSelectionModel({
+                            singleSelect:true,
+                            listeners: {
+                                selectionchange: function(sel){
+                                    var rec = sel.getSelected();
+                                    if (!rec) {
+                                        return;
+                                    }
+
+                                    var text = '<h1>' + rec.get('subject') + '</h1><br />'
+                                    + rec.get('description') + '<br /><hr />';
+                                    if (rec.get('report')) {
+                                        text += '<h2>Отчет</h2>' + rec.get('report');
+                                    }
+
+                                    Ext.getCmp('task-description').body.update(text);
+                                }
+                            }
+                        })
+                    }, new Ext.Panel({
+                        id: 'task-description',
+                        region: 'south',
+                        title: 'Описание задания',
+                        height: 300,
+                        split: true,
+                        bodyStyle: 'padding: 10px; font-family: Arial; font-size: 12px;'
+                    })]
                 }
             ]
 

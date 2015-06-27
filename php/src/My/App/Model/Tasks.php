@@ -19,6 +19,8 @@ class Tasks extends Tables
             'create_time' => 'date',
             'finish_time' => 'date',
             'subject' => 'str',
+            'description' => 'str',
+            'report' => 'str',
             'status' => 'str'
         ];
 

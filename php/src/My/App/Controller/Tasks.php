@@ -11,7 +11,7 @@ class Tasks extends RequireAuthController
         $global = Registry::getInstance();
 
         $tasks = new TasksModel();
-        //$tasks->sortBy($global->getVar('sort', ''), $global->getVar('dir', 'asc'));
+        $tasks->sortBy($global->getVar('sort', ''), $global->getVar('dir', 'asc'));
         $tasks->setLimit($global->getVar('limit', 0));
         $tasks->setStart($global->getVar('start', 0));
 

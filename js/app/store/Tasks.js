@@ -46,6 +46,12 @@ App.store.Tasks = Ext.extend(Ext.data.JsonStore, {
                 }, {
                     name: 'status',
                     type: 'string'
+                }, {
+                    name: 'description',
+                    type: 'string'
+                }, {
+                    name: 'report',
+                    type: 'string'
                 }
             ],
             softInfo: {
