@@ -2,27 +2,7 @@ Ext.ns('App.grid');
 
 App.grid.Users = Ext.extend(Ext.grid.GridPanel, {
     initComponent: function() {
-        var usersStore = new Ext.data.JsonStore({
-            root: 'users',
-            idProperty: 'id',
-            url: 'php/index.php?controller=users&action=getList',
-            autoLoad: true,
-            fields: [
-                {name: 'id',    type: 'int'},
-                {name: 'login', type: 'string'},
-                {name: 'name',  type: 'string' },
-                {name: 'email', type: 'string' }
-            ],
-            softInfo: {
-                field: 'name',
-                direction: 'DESC'
-            },
-            remoteSort: true
-        });
-
         Ext.applyIf(this, {
-            store: usersStore,
-
             colModel: new Ext.grid.ColumnModel({
                 defaults: {
                     width: 120,
@@ -45,7 +25,7 @@ App.grid.Users = Ext.extend(Ext.grid.GridPanel, {
 
             bbar: new Ext.PagingToolbar({
                 pageSize: 20,
-                store: usersStore,
+                store: this.store,
                 displayInfo: true,
                 loadMask: true,
                 frame: true,
@@ -57,14 +37,16 @@ App.grid.Users = Ext.extend(Ext.grid.GridPanel, {
                         iconCls: 'add-user',
                         border: true,
                         handler: function() {
+                            var gridStore = this.ownerCt.ownerCt.store;
                             var createUserForm = new App.form.User({
                                 title: 'Новый пользователь',
                                 renderTo: Ext.getBody(),
                                 url: 'php/index.php?controller=user&action=create',
+                                updateStore: gridStore,
                                 OkBtnPressHandler: function (form) {
                                     form.getForm().submit({
                                         success: function() {
-                                            usersStore.reload();
+                                            form.updateStore.reload();
                                             Ext.destroy(form);
                                         },
                                         failure: function(frm, action) {

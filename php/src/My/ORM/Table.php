@@ -90,12 +90,7 @@ abstract class Table
 
         $this->db->query($sql);
 
-        // Мы создали новую запись. Теперь пытаемся загрузить ее
-        //  Возможны 2 случая
-        //   1) Мы уже вставили запись с главным ключом (и мы его знаем)
-        //   2) Мы получили ключ от insert_id
-        // Чтобы согласовать эти и другие данные, загрузим созданные объект
-        $fkey = array_diff($this->getFieldsKey(), array_keys($key));
+        $fkey = array_diff($this->getFieldsKey(), $rfields);
         if (count($fkey) > 1) {
             $this->throwException(Exception::FULLSHIT, $fkey);
         } elseif (count($fkey) == 1) {
@@ -142,7 +137,7 @@ abstract class Table
         }
         
         $sql = 'SELECT * FROM ' . $this->getTableName() . ' WHERE ' . implode(',', $sql);
-        $this->tryLoad($sql);
+        return $this->tryLoad($sql);
     }
 
     /**
@@ -261,7 +256,7 @@ abstract class Table
 
     protected function throwException($message, $params = '')
     {
-        throw new Exception($message . ' [' . get_class($this) . '] => {' . $params . '}');
+        throw new Exception($message . ' [' . get_class($this) . '] => {' . implode(' ', $params) . '}');
     }
 
     protected function tryLoad($sql)

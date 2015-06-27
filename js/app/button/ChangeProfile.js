@@ -3,8 +3,10 @@ Ext.ns('App.button');
 App.button.ChangeProfile = Ext.extend(Ext.Button, {
     initComponent: function () {
         Ext.applyIf(this, {
-            'text': 'Обновить информацию о себе',
+            text: 'Обновить информацию о себе',
+            afterSuccess: function() {},
             handler: function () {
+                var afterSuccessFn = this.afterSuccess;
                 var userForm = new App.form.User({
                     title: 'Редактировать',
                     url: 'php/index.php?controller=user&action=update',
@@ -12,6 +14,7 @@ App.button.ChangeProfile = Ext.extend(Ext.Button, {
                     OkBtnPressHandler: function (form) {
                         form.getForm().submit({
                             success: function () {
+                                afterSuccessFn();
                                 Ext.destroy(form);
                             },
                             failure: function (frm, action) {
