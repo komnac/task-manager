@@ -7,7 +7,8 @@ CREATE TABLE `tm_users` (
   `name` VARCHAR (255) DEFAULT '',
   `password` VARCHAR (100) DEFAULT '',
   PRIMARY KEY (`id`),
-  UNIQUE KEY (`login`)
+  UNIQUE KEY (`login`),
+  KEY (`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
 
 INSERT INTO tm_users VALUES (NULL, 'admin', '', 'Admin', MD5(MD5('123')));

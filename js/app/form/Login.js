@@ -38,7 +38,6 @@ App.form.Login = Ext.extend(Ext.FormPanel, {
                     var frm = frmPnl.getForm();
                     if (!frm.isValid()) {
                         return false;
-
                     }
 
                     frm.submit({

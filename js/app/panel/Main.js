@@ -17,7 +17,7 @@ App.panel.Main = Ext.extend(Ext.TabPanel, {
             border: false,
             region: 'center',
             margins:'0 5 5 0',
-            tbar: new Ext.Toolbar({
+            tbar: {
                 items: [
                     '->', {
                         xtype: 'app-button-change-profile',
@@ -29,7 +29,7 @@ App.panel.Main = Ext.extend(Ext.TabPanel, {
                         xtype: 'app-button-logout'
                     }
                 ]
-            }),
+            },
             items: [
                 {
                     title: 'Пользователи',
@@ -64,6 +64,7 @@ App.panel.Main = Ext.extend(Ext.TabPanel, {
                     }, new Ext.Panel({
                         id: 'task-description',
                         region: 'south',
+                        collapsible: true,
                         title: 'Описание задания',
                         height: 300,
                         split: true,
