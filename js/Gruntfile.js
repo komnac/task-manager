@@ -10,6 +10,7 @@ module.exports = function(grunt) {
                     'app/panel/*.js',
                     'app/button/*.js',
                     'app/grid/*.js',
+                    'app/store/*.js',
                     'app/app.js'
                 ],
                 dest: 'build/<%= pkg.name %>.js'
