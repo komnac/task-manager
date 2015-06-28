@@ -51,7 +51,6 @@ App.form.CreateTask = Ext.extend(Ext.FormPanel, {
                 }
             }, {
                 xtype: 'htmleditor',
-                title: 'Описание задачи',
                 fieldLabel: 'Описание',
                 name: 'description',
                 anchor: '99%'

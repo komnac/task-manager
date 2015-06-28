@@ -4,6 +4,7 @@ App.button.ChangeProfile = Ext.extend(Ext.Button, {
     initComponent: function () {
         Ext.applyIf(this, {
             text: 'Обновить информацию о себе',
+            iconCls: 'edit-info',
             afterSuccess: function() {},
             handler: function () {
                 var afterSuccessFn = this.afterSuccess;

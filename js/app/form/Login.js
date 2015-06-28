@@ -28,7 +28,7 @@ App.form.Login = Ext.extend(Ext.FormPanel, {
                     }
                 }
             }],
-            successAuthHandler: function() {
+            successAuthHandler: function(data) {
                 Ext.Msg.alert('Успех', 'Успешно авторизованы');
             },
             buttons: [{
@@ -41,9 +41,9 @@ App.form.Login = Ext.extend(Ext.FormPanel, {
                     }
 
                     frm.submit({
-                        success: function () {
+                        success: function (form, action) {
                             frmPnl.hide();
-                            frm.successAuthHandler();
+                            frm.successAuthHandler(action.result);
                             Ext.destroy(frmPnl);
                         },
                         failure: function () {

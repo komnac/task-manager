@@ -12,6 +12,8 @@ App.panel.Main = Ext.extend(Ext.TabPanel, {
             })
         });
 
+        var userId = this.userId;
+
         Ext.applyIf(this, {
             activeTab: 1,
             border: false,
@@ -58,6 +60,19 @@ App.panel.Main = Ext.extend(Ext.TabPanel, {
                                     }
 
                                     Ext.getCmp('task-description').body.update(text);
+
+                                    Ext.getCmp('task-inprogress-btn').setDisabled(
+                                        (rec.get('executor_id') != userId)
+                                        || (rec.get('status') != 'Создана')
+                                    );
+                                    Ext.getCmp('task-report-btn').setDisabled(
+                                        (rec.get('executor_id') != userId)
+                                        || (rec.get('status') != 'В работе')
+                                    );
+                                    Ext.getCmp('task-finish-btn').setDisabled(
+                                        (rec.get('owner_id') != userId)
+                                        || (rec.get('status') == 'Завершена')
+                                    );
                                 }
                             }
                         })

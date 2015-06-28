@@ -1,3 +1,27 @@
 .add-user {
     background-image: url(../images/add-user.gif) !important;
 }
+
+.exit {
+    background-image: url(../images/exit.png) !important;
+}
+
+.edit-info {
+    background-image: url(../images/edit-info.png) !important;
+}
+
+.add-task {
+    background-image: url(../images/add-task.png) !important;
+}
+
+.play-task {
+    background-image: url(../images/play-task.png) !important;
+}
+
+.report-task {
+    background-image: url(../images/report-task.png) !important;
+}
+
+.finish-task {
+    background-image: url(../images/finish-task.png) !important;
+}

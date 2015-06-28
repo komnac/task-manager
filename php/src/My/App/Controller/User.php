@@ -14,13 +14,13 @@ class User extends Controller {
             return [
                 'success' => true,
                 'login'   => $global->user->login,
-                'name'   => $global->user->name
+                'id'   => $global->user->id
             ];
         } catch (\Exception $e) {
             return [
                 'success' => false,
                 'login'   => '',
-                'name'    => ''
+                'id'    => ''
             ];
         }
     }
@@ -43,7 +43,7 @@ class User extends Controller {
             $data = [
                 'success' => true,
                 'login'   => $user->login,
-                'name'    => $user->name
+                'id'    => $user->id
             ];
         } catch (\Exception $e) {
             $data =  [
@@ -94,6 +94,7 @@ class User extends Controller {
         return [
             'success' => true,
             'data' => [
+                'id' => $user->id,
                 'name' => $user->name,
                 'login' => $user->login,
                 'email' => $user->email

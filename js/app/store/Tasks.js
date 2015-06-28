@@ -35,8 +35,8 @@ App.store.Tasks = Ext.extend(Ext.data.JsonStore, {
                     type: 'date',
                     dateFormat: 'Y-m-d H:i:s'
                 }, {
-                    name: 'finish_time',
-                    mapping: 'finish_time',
+                    name: 'update_time',
+                    mapping: 'update_time',
                     type: 'date',
                     dateFormat: 'Y-m-d H:i:s'
                 }, {

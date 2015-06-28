@@ -17,7 +17,7 @@ class Tasks extends Tables
             'executor.name' => 'str',
             'executor.login' => 'str',
             'create_time' => 'date',
-            'finish_time' => 'date',
+            'update_time' => 'date',
             'subject' => 'str',
             'description' => 'str',
             'report' => 'str',

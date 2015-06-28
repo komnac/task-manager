@@ -3,11 +3,14 @@ Ext.ns('App');
 Ext.onReady(function () {
     Ext.QuickTips.init();
 
-    var mainAppliction = function() {
+    var user = null;
+
+    var mainAppliction = function(response) {
         new Ext.Viewport({
             layout: 'fit',
             items: [{
-                xtype: 'app-panel-main'
+                xtype: 'app-panel-main',
+                userId: response.id
             }]
         });
     }
@@ -27,7 +30,7 @@ Ext.onReady(function () {
                 });
                 frmLogin.getEl().center();
             } else {
-                mainAppliction()
+                mainAppliction(auth)
             }
         }
     });

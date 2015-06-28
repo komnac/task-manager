@@ -4,6 +4,7 @@ App.button.Logout = Ext.extend(Ext.Button, {
     initComponent: function() {
         Ext.applyIf(this, {
             text: 'Выйти',
+            iconCls: 'exit',
             handler: function () {
                 Ext.Ajax.request({
                     url: 'php/index.php?controller=user&action=logoff',
