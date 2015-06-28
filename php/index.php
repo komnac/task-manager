@@ -7,6 +7,7 @@ use My\App\Registry as Registry;
 use My\App\Controller\User as UserController;
 use My\App\Controller\Users as UsersController;
 use My\App\Controller\Tasks as TasksController;
+use My\App\Controller\Task as TaskController;
 
 define('APPDEBUG', '1');
 if (APPDEBUG) {
@@ -34,6 +35,9 @@ try {
             break;
         case 'tasks':
             $action = new TasksController();
+            break;
+        case 'task':
+            $action = new TaskController();
             break;
         default:
             die('');

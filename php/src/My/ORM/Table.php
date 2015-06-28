@@ -256,7 +256,11 @@ abstract class Table
 
     protected function throwException($message, $params = '')
     {
-        throw new Exception($message . ' [' . get_class($this) . '] => {' . implode(' ', $params) . '}');
+        if (is_array($params)) {
+            $params = implode(', ', $params);
+        }
+
+        throw new Exception($message . ' [' . get_class($this) . '] => {' . $params . '}');
     }
 
     protected function tryLoad($sql)
