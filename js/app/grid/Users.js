@@ -22,6 +22,7 @@ App.grid.Users = Ext.extend(Ext.grid.GridPanel, {
             selModel: new Ext.grid.RowSelectionModel({
                 singleSelect: true
             }),
+
             tbar: {
                 items: [{
                     text: 'Создать нового',
@@ -59,8 +60,7 @@ App.grid.Users = Ext.extend(Ext.grid.GridPanel, {
                 store: this.store,
                 displayInfo: true,
                 loadMask: true,
-                frame: true,
-                title: 'Список пользователей'
+                frame: true
             })
         });
         App.grid.Users.superclass.initComponent.call(this);

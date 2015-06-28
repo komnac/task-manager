@@ -9,9 +9,10 @@ class Users extends Tables
         $this->_clear();
         $this->tables = ['tm_users'];
         $this->fields = [
+            'id'     => 'int',
             'login'  => 'str',
             'name'   => 'str',
-            'email'  => 'str',
+            'email'  => 'str'
         ];
     }
 }

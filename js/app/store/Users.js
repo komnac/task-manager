@@ -6,8 +6,7 @@ App.store.Users = Ext.extend(Ext.data.JsonStore, {
         Ext.applyIf(config, {
             root: 'users',
             idProperty: 'id',
-            url: 'php/index.php?controller=users&action=getList',
-            autoLoad: true,
+            totalProperty: 'totalCount',
             fields: [
                 {name: 'id',    type: 'int'},
                 {name: 'login', type: 'string'},
@@ -17,6 +16,12 @@ App.store.Users = Ext.extend(Ext.data.JsonStore, {
             softInfo: {
                 field: 'name',
                 direction: 'DESC'
+            },
+            autoLoad: {
+                params: {
+                    start: 0,
+                    limit: 20
+                }
             },
             remoteSort: true
         });

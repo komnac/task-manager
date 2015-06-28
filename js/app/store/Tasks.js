@@ -6,8 +6,7 @@ App.store.Tasks = Ext.extend(Ext.data.JsonStore, {
         Ext.applyIf(config, {
             root: 'tasks',
             idProperty: 'id',
-            url: 'php/index.php?controller=tasks&action=getList',
-            autoLoad: true,
+            totalProperty: 'totalCount',
             fields: [
                 {
                     name: 'id',
@@ -57,6 +56,12 @@ App.store.Tasks = Ext.extend(Ext.data.JsonStore, {
             softInfo: {
                 field: 'id',
                 direction: 'DESC'
+            },
+            autoLoad: {
+                params: {
+                    start: 0,
+                    limit: 20
+                }
             },
             remoteSort: true
         });

@@ -1,8 +1,16 @@
 Ext.ns('App.panel');
 App.panel.Main = Ext.extend(Ext.TabPanel, {
     initComponent: function() {
-        var storeUsers = new App.store.Users();
-        var storeTasks = new App.store.Tasks();
+        var storeUsers = new App.store.Users({
+            proxy: new Ext.data.HttpProxy({
+                url: 'php/index.php?controller=users&action=getList'
+            })
+        });
+        var storeTasks = new App.store.Tasks({
+            proxy: new Ext.data.HttpProxy({
+                url: 'php/index.php?controller=tasks&action=getList'
+            })
+        });
 
         Ext.applyIf(this, {
             activeTab: 1,

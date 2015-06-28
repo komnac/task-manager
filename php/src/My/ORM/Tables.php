@@ -225,7 +225,7 @@ abstract class Tables {
     public function sortBy($field, $asc = 'asc')
     {
         $asc = strtolower($asc);
-        if ($field = $this->getSqlField($field)) {
+        if (!$field = $this->getSqlField($field)) {
             return null;
         }
 
